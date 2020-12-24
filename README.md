@@ -99,3 +99,6 @@ You can add more users in server/accounts.json
 ![](img/alice.png)
 ![](img/bob.png)
 
+
+# License
+THE BEER-WARE LICENSE
