@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+option go_package = "github.com/Hoongeun/gogoatalk/protobuf";
+
+import "google/protobuf/timestamp.proto";
+
+package chat;
+
+service RouteChat {
+        rpc Login (LoginRequest) returns (LoginResponse);
+        rpc Logout (LogoutRequest) returns (GeneralResponse);
+        rpc ReadLatest(ReadLatestRequest) returns (ReadGeneralResponse);
+        rpc ReadMore(ReadMoreRequest) returns (ReadGeneralResponse);
+        rpc SendMessage(SendMessageRequest) returns (GeneralResponse);
+        rpc RemoveMessage(RemoveMessageRequest) returns (GeneralResponse);
+        rpc UpdateMessage(UpdateMessageRequest) returns (GeneralResponse);
+        rpc Stream(stream StreamRequest) returns (stream StreamResponse);
+}
+
+message Message {
+        string id = 1;
+        string text = 2;
+        string userid = 3;
+        int64 createdAt = 4;
+        int64 updatedAt = 5;
+}
+
+message Present {
+        string userid = 1;
+        string username = 2;
+}
+
+message LoginRequest {
+        string username = 1;
+        string password = 2;
+}
+
+message LoginResponse {
+        string userid = 1;
+        string token = 2;
+        repeated Present presents = 3;
+}
+
+message LogoutRequest {
+}
+
+message ReadMoreRequest {
+        string id = 2;
+        int32 more = 3;
+}
+
+message ReadLatestRequest {
+}
+
+message ReadGeneralResponse {
+        repeated Message messages = 1;
+}
+
+message SendMessageRequest {
+        string text = 2;
+}
+
+message RemoveMessageRequest {
+        string id = 2;
+}
+
+message UpdateMessageRequest {
+        string id = 2;
+        string text = 3;
+}
+
+message GeneralResponse {
+        enum Status {
+             SUCCESS = 0;
+             FAIL = 1;
+        }
+        Status status = 1;
+        string message = 2;
+}
+
+message StreamRequest {}
+
+message StreamResponse {
+        google.protobuf.Timestamp timestamp = 1;
+        oneof event {
+              Login user_login = 2;
+              Logout user_logout = 3;
+              SendMessage send_message = 4;
+              UpdateMessage update_message = 5;
+              RemoveMessage remove_message = 6;
+              Shutdown server_shutdown = 7;
+        }
+        message Login {
+                string username = 1;
+                string userid = 2;
+        }
+        message Logout {
+                string username = 1;
+                string userid = 2;
+        }
+        message SendMessage {
+                string id = 1;
+                string userid = 2;
+                string text = 3;
+                int64 createdAt = 4;
+                int64 updatedAt = 5;
+        }
+        message UpdateMessage {
+                string id = 1;
+                string text = 2;
+                int64 updatedAt = 4;
+        }
+        message RemoveMessage {
+                string id = 1;
+        }
+        message Shutdown {}
+}
