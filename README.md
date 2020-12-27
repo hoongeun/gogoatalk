@@ -1,7 +1,7 @@
 # Gogoatalk - Simple TUI chat written in Go
 This is an assignment for Network class.
-The client may not work in windows environment.
-This can be useful as a tutorial of go-grpc.
+This client may not work in windows environment.
+It can be useful as a tutorial of go-grpc.
 
 ## Feature
 - TUI based chat
